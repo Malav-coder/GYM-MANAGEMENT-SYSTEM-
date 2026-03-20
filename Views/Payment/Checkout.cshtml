@@ -1,0 +1,133 @@
+@model PaymentViewModel
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="section-header mb-4">
+    <div>
+        <h1 class="page-title mb-1"><i class="bi bi-credit-card-2-front-fill me-2" style="color:var(--accent)"></i>Secure Checkout</h1>
+        <p class="page-subtitle">Complete your payment securely</p>
+    </div>
+</div>
+
+<div class="checkout-wrapper">
+    <div class="row g-4">
+        <!-- Order Summary -->
+        <div class="col-md-5">
+            <div class="card order-summary-card mb-3">
+                <div class="card-body">
+                    <div class="card-chip"><i class="bi bi-receipt"></i> Order Summary</div>
+                    <h4 style="font-weight:800;margin-bottom:4px;">@Model.PlanName</h4>
+                    <p style="color:var(--text-secondary);font-size:0.85rem;margin-bottom:20px;">
+                        Payment Type: <span style="font-weight:600;color:var(--accent);">@Model.PaymentType</span>
+                    </p>
+                    
+                    @if (ViewBag.Discount != null)
+                    {
+                        <div class="d-flex justify-content-between align-items-center mb-2" style="font-size:0.85rem;">
+                            <span style="color:var(--text-secondary);">Base Price</span>
+                            <span>₹@((Model.Amount + (decimal)ViewBag.Discount).ToString("N2"))</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-3" style="font-size:0.85rem;">
+                            <span style="color:var(--accent-green);font-weight:600;">Early Renewal Discount</span>
+                            <span style="color:var(--accent-green);font-weight:600;">-₹@(((decimal)ViewBag.Discount).ToString("N2"))</span>
+                        </div>
+                    }
+                    
+                    <div class="payment-amount">₹@Model.Amount.ToString("N2")</div>
+                    <p style="color:var(--text-muted);font-size:0.78rem;margin-top:6px;">Total amount due today</p>
+
+                    <div class="divider"></div>
+
+                    <div class="security-badges">
+                        <div class="security-badge"><i class="bi bi-shield-lock-fill"></i> SSL Encrypted</div>
+                        <div class="security-badge"><i class="bi bi-patch-check-fill"></i> PCI DSS</div>
+                        <div class="security-badge"><i class="bi bi-lock-fill"></i> Secure</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Payment method icons -->
+            <div class="card">
+                <div class="card-body" style="padding:14px 20px;">
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <span style="font-size:0.75rem;color:var(--text-muted);">Accepted:</span>
+                        <span class="badge bg-primary"><i class="bi bi-credit-card"></i> Visa</span>
+                        <span class="badge bg-secondary"><i class="bi bi-credit-card-2-back"></i> Mastercard</span>
+                        <span class="badge bg-secondary"><i class="bi bi-bank2"></i> RuPay</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Form -->
+        <div class="col-md-7">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title"><i class="bi bi-credit-card me-1"></i>Payment Details</div>
+                    <form asp-action="Checkout" method="post" id="paymentForm">
+                        <input type="hidden" asp-for="PlanId" />
+                        <input type="hidden" asp-for="PaymentType" />
+                        <input type="hidden" asp-for="MembershipId" />
+                        <input type="hidden" asp-for="Amount" />
+
+                        <div class="mb-4">
+                            <label asp-for="CardNumber" class="form-label">
+                                <i class="bi bi-credit-card me-1"></i>Card Number
+                            </label>
+                            <input asp-for="CardNumber" class="form-control payment-card-input"
+                                   placeholder="1234  5678  9012  3456"
+                                   maxlength="19" id="cardNumber" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="CardHolder" class="form-label">
+                                <i class="bi bi-person me-1"></i>Cardholder Name
+                            </label>
+                            <input asp-for="CardHolder" class="form-control" placeholder="John Doe" />
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-6">
+                                <label asp-for="Expiry" class="form-label">
+                                    <i class="bi bi-calendar3 me-1"></i>Expiry (MM/YY)
+                                </label>
+                                <input asp-for="Expiry" class="form-control payment-card-input" placeholder="12/26" maxlength="5" />
+                            </div>
+                            <div class="col-6">
+                                <label asp-for="CVV" class="form-label">
+                                    <i class="bi bi-shield-lock me-1"></i>CVV
+                                </label>
+                                <input asp-for="CVV" class="form-control payment-card-input" placeholder="•••" maxlength="3" type="password" />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100 btn-lg" id="payBtn">
+                            <i class="bi bi-lock-fill"></i> Pay ₹@Model.Amount.ToString("N2") Securely
+                        </button>
+                        <p style="text-align:center;font-size:0.74rem;color:var(--text-muted);margin-top:12px;">
+                            <i class="bi bi-shield-check me-1"></i>Your payment info is encrypted and never stored
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Format card number with spaces
+        document.getElementById('cardNumber')?.addEventListener('input', function(e) {
+            let val = e.target.value.replace(/\D/g, '').slice(0, 16);
+            e.target.value = val.match(/.{1,4}/g)?.join('  ') ?? val;
+        });
+        // Pay button loading state
+        document.getElementById('paymentForm')?.addEventListener('submit', function() {
+            const btn = document.getElementById('payBtn');
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+            btn.disabled = true;
+        });
+    </script>
+}

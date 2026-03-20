@@ -1,0 +1,420 @@
+########################################
+# ╔═══════════════════════════════════════════════════════════╗
+# ║  GYM MANAGEMENT SYSTEM - PRODUCTION GRADE .gitignore      ║
+# ║  Comprehensive file exclusion to prevent security issues  ║
+# ║  Version: 1.0 | Last Updated: 2026-03-20                ║
+# ╚═══════════════════════════════════════════════════════════╝
+########################################
+
+########################################
+# ⚠️  CRITICAL: SENSITIVE FILES - NEVER PUSH
+########################################
+
+## Configuration files with secrets and credentials
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json
+!appsettings.json
+appsettings.Staging.json
+appsettings.Production.json
+
+## Environment variable files
+.env
+.env.local
+.env.*.local
+.env.*.js
+.env.production.local
+.env.development.local
+.env.test.local
+
+## Database connection strings and credentials
+Migrations/*.designer.cs # Contains seeded passwords
+*.db-shm
+*.db-wal
+
+########################################
+# 🔧 BUILD & COMPILATION ARTIFACTS
+########################################
+
+## Compiled output directories
+bin/
+obj/
+Debug/
+Release/
+Staging/
+Production/
+dist/
+build/
+
+## NuGet compiled files
+*.dll
+*.exe
+*.so
+*.dylib
+*.su
+*.o
+*.a
+*.out
+*.stackdump
+*.class
+
+## Precompiled headers
+*.gch
+*.pch
+
+## Build logs and results
+BuildLog.htm
+*.trx
+*.coverage
+TestResults/
+
+########################################
+# 💾 VISUAL STUDIO & IDE FILES
+########################################
+
+## Visual Studio cache/options directory
+.vs/
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+## Visual Studio user profiling files
+.vsc
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+## ReSharper cache files
+.resharper
+*.resharper
+ReSharperCache/
+ParserCache/
+
+## JetBrains Rider IDE
+.idea/
+*.sln.iml
+*.sln.user
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/shelf/
+.idea/modules.xml
+
+## Visual Studio Code settings
+*.code-workspace
+.history/
+.local/
+
+## User-specific project/solution files (MUST EXCLUDE)
+*.user
+*.suo
+*.sln.docstates
+*.userosscache
+*.sln.user
+*.vcxproj.user
+*.csproj.user
+*.vbproj.user
+*.nuproj.user
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+## Visual Studio profiling files
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+########################################
+# 📦 NUGET & DEPENDENCIES
+########################################
+
+## NuGet files (local packages)
+packages/
+.nuget/
+*.nupkg
+*.snupkg
+*.nupkg.metadata
+nuget.config
+project.lock.json
+project.assets.json
+
+## Dependency lock files
+yarn.lock
+package-lock.json
+
+########################################
+# 🗄️ DATABASE FILES
+########################################
+
+## SQLite databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+## SQL Server
+*.mdf
+*.ldf
+*.ndf
+*.mdf.log
+
+## PostgreSQL
+*.sql
+!migrations/*.sql
+
+## General database backups
+*.backup
+*.bak
+*.tmp
+
+########################################
+# 🔐 SECRETS, KEYS & SENSITIVE DATA
+########################################
+
+## API Keys and tokens
+*.key
+*.pem
+*.pfx
+*.p12
+*.jks
+private_key
+public_key
+secrets.json
+secrets.Development.json
+secret_token
+auth_token
+.ssh/
+
+## SSL certificates
+*.crt
+*.cert
+*.cer
+*.p7b
+
+## Backup files that may contain secrets
+*.bak.bak
+backup.json
+secrets_backup.json
+
+########################################
+# 📝 LOGS & TEMPORARY FILES
+########################################
+
+## Application logs
+logs/
+*.log
+*.log.*
+*.logs
+debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+## Entity Framework logs
+eflog.txt
+ef-migrations.log
+
+## Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.tmp*
+
+## Session files
+session/
+sessions/
+*.session
+
+########################################
+# 🖥️ OPERATING SYSTEM FILES
+########################################
+
+## Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+$RECYCLE.BIN/
+*._
+*.lnk
+.windows-build-helper/
+
+## macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+## Linux
+.nfs*
+
+########################################
+# 📂 PROJECT-SPECIFIC EXCLUSIONS
+########################################
+
+## Static assets cache
+wwwroot/lib/
+!wwwroot/css/
+!wwwroot/js/
+wwwroot/dist/
+wwwroot/.cache/
+
+## Upload directories (user-generated)
+uploads/
+media/
+attachments/
+files/
+documents/
+
+## Testing artifacts
+.coverage/
+coverage/
+coveragereport/
+opencover/
+CodeCoverage/
+
+## Performance profiling
+*.prof
+*.perf
+*.etl
+profile.xml
+
+## Local development artifacts
+.localhistory/
+.localproxy/
+.mock/
+.stubs/
+
+########################################
+# 🔍 RUNTIME GENERATED FILES
+########################################
+
+## Runtime files
+*.runtime
+*.deps.json
+*.runtimeconfig.json
+runtimeconfig.*.json
+
+## Static web assets
+GymManagement.staticwebassets.endpoints.json
+GymManagement.staticwebassets.runtime.json
+staticwebassets.build.endpoints.json
+staticwebassets.build.json
+staticwebassets.development.json
+*.staticwebassets.*
+
+## Razor compiled output
+*.cshtml.g.cs
+*.razor.g.cs
+RazorAssets/
+
+########################################
+# 📦 PACKAGE MANAGERS
+########################################
+
+## npm (if using Node.js for frontend)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+## Ruby
+Gemfile.lock
+bundle/
+
+## Python (if using Python scripts)
+__pycache__/
+*.py[cod]
+venv/
+env/
+
+########################################
+# 🔧 TOOL-SPECIFIC FILES
+########################################
+
+## Docker
+.docker/
+.dockerignore
+
+## Git
+.git/
+.gitignore.bak
+.gitmodules
+
+## GitHub Actions
+.github/workflows/
+
+## CI/CD pipeline files (local copies)
+.circleci/
+.gitlab-ci.yml.local
+.travis.yml.local
+
+## Formatters and linters cache
+.prettierignore.local
+.eslintignore.local
+
+########################################
+# ⚡ VISUAL STUDIO BUILD OUTPUTS
+########################################
+
+## Backup & autosave files
+*.backup
+*.[Cc]ache
+*.log.*
+*.log
+
+## Visual Studio generated include files
+GeneratedArtifacts/
+
+## MSBuild Binary and Structured Log
+*.binlog
+
+## NVidia Nsight GPU debugger configuration file
+*.nvuser
+
+## MFractors (Material Design for Xamarin.Android) cache/options directory
+.mfractor/
+
+## Local History for Visual Studio Code
+.history/
+.ionide/
+
+########################################
+# 🚫 MUST NOT BE TRACKED
+########################################
+
+# These are critical security files - NEVER add them to git
+!.gitignore                    # gitignore itself should be tracked
+appsettings.Development.json   # Local development config ❌
+appsettings.*.json             # Environment-specific configs ❌
+.env*                          # Environment files ❌
+*.key                          # Private keys ❌
+*.p12                          # Certificates ❌
+secrets.json                   # Secrets ❌
+
+########################################
+# ✅ FILES TO KEEP IN GIT
+########################################
+
+# Explicitly include these (using negative patterns)
+!.gitignore
+!.gitattributes
+!.github/
+!.vscode/settings.json
+!.vscode/launch.json
+!appsettings.json              # Base config (no secrets)
+!README.md
+!LICENSE

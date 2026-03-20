@@ -1,0 +1,139 @@
+@model List<User>
+@{
+    ViewData["Title"] = "Members";
+}
+
+<div class="section-header mb-4">
+    <div>
+        <h1 class="page-title mb-1"><i class="bi bi-people-fill me-2" style="color:var(--accent)"></i>Members</h1>
+        <p class="page-subtitle">Manage all registered gym members</p>
+    </div>
+</div>
+
+<!-- Search Bar -->
+<div class="card mb-4">
+    <div class="card-body" style="padding:16px 20px;">
+        <form method="get" class="d-flex gap-3 align-items-center">
+            <div class="flex-grow-1 position-relative">
+                <i class="bi bi-search position-absolute" style="left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);"></i>
+                <input type="text" name="search" class="form-control" style="padding-left:40px;"
+                       placeholder="Search by name, email, or phone..." value="@ViewBag.Search" />
+            </div>
+            <button type="submit" class="btn btn-primary" style="white-space:nowrap;">
+                <i class="bi bi-search"></i> Search
+            </button>
+            @if (!string.IsNullOrEmpty(ViewBag.Search as string))
+            {
+                <a href="@Url.Action("Index")" class="btn btn-secondary" style="white-space:nowrap;">
+                    <i class="bi bi-x-circle"></i> Clear
+                </a>
+            }
+        </form>
+    </div>
+</div>
+
+<!-- Members Table -->
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-container">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th><i class="bi bi-person me-1"></i>Name</th>
+                        <th><i class="bi bi-envelope me-1"></i>Email</th>
+                        <th><i class="bi bi-telephone me-1"></i>Phone</th>
+                        <th><i class="bi bi-collection me-1"></i>Current Plan</th>
+                        <th>Membership</th>
+                        <th>Account</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var member in Model)
+                    {
+                        var latestMembership = member.Memberships.FirstOrDefault();
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#0066ff);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;">
+                                        @(member.Name.Length > 0 ? member.Name[0].ToString().ToUpper() : "?")
+                                    </div>
+                                    <span style="font-weight:600;">@member.Name</span>
+                                </div>
+                            </td>
+                            <td style="color:var(--text-secondary);">@member.Email</td>
+                            <td style="color:var(--text-secondary);">@member.Phone</td>
+                            <td>
+                                @if (latestMembership != null)
+                                {
+                                    <span class="badge bg-primary"><i class="bi bi-collection me-1"></i>@latestMembership.Plan.PlanName</span>
+                                }
+                                else
+                                {
+                                    <span style="color:var(--text-muted);font-size:0.82rem;">No plan</span>
+                                }
+                            </td>
+                            <td>
+                                @if (latestMembership != null)
+                                {
+                                    if (latestMembership.Status == "Active")
+                                    {
+                                        <span class="badge bg-success"><i class="bi bi-patch-check me-1"></i>Active</span>
+                                    }
+                                    else if (latestMembership.Status == "Expired")
+                                    {
+                                        <span class="badge bg-danger"><i class="bi bi-clock-history me-1"></i>Expired</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary"><i class="bi bi-x-circle me-1"></i>Cancelled</span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @if (member.IsFrozen)
+                                {
+                                    <span class="badge bg-danger"><i class="bi bi-snow me-1"></i>Frozen</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Active</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="d-flex gap-2 flex-wrap">
+                                    <a asp-action="Details" asp-route-id="@member.Id" class="btn btn-sm" style="background:rgba(0,200,255,0.1);color:#00c8ff;border:1px solid rgba(0,200,255,0.25);">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
+                                    @if (member.IsFrozen)
+                                    {
+                                        <form asp-action="Unfreeze" asp-route-id="@member.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm" style="background:rgba(57,180,100,0.1);color:#5db87a;border:1px solid rgba(57,180,100,0.25);">
+                                                <i class="bi bi-sun"></i> Unfreeze
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="Freeze" asp-route-id="@member.Id" method="post" class="d-inline">
+                                            <button type="submit" class="btn btn-sm" style="background:rgba(180,140,50,0.1);color:#d4a84d;border:1px solid rgba(180,140,50,0.25);">
+                                                <i class="bi bi-snow"></i> Freeze
+                                            </button>
+                                        </form>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5" style="color:var(--text-muted);">
+                <i class="bi bi-people" style="font-size:2.5rem;margin-bottom:12px;display:block;"></i>
+                <p>No members found.</p>
+            </div>
+        }
+    </div>
+</div>

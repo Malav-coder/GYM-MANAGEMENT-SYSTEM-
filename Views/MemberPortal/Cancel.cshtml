@@ -1,0 +1,87 @@
+@model Membership
+@{
+    ViewData["Title"] = "Cancel Membership";
+}
+
+<div class="section-header mb-4 text-white">
+    <div>
+        <h1 class="page-title mb-1"><i class="bi bi-x-circle-fill me-2" style="color:var(--accent-red)"></i>Cancel Membership</h1>
+        <p class="page-subtitle">Please review the details before confirming</p>
+    </div>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="bi bi-arrow-left"></i> Go Back
+    </a>
+</div>
+
+<div class="row g-3 mb-4" style="max-width:720px;">
+    <!-- Current Membership -->
+    <div class="col-md-6">
+        <div class="card h-100 text-white">
+            <div class="card-body">
+                <div class="card-title"><i class="bi bi-collection me-1"></i>Current Membership</div>
+                <div class="detail-row">
+                    <span class="label">Plan</span>
+                    <span class="value"><span class="badge bg-primary">@Model.Plan.PlanName</span></span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Start Date</span>
+                    <span class="value">@Model.StartDate.ToString("dd MMM yyyy")</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">End Date</span>
+                    <span class="value">@Model.EndDate.ToString("dd MMM yyyy")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cancellation Fee -->
+    <div class="col-md-6">
+        <div class="card h-100 text-white" style="border-color:rgba(255,78,106,0.2);">
+            <div class="card-body">
+                <div class="card-title" style="color:var(--accent-red);"><i class="bi bi-receipt me-1"></i>Cancellation Fee</div>
+                <div class="detail-row">
+                    <span class="label">Days Since Start</span>
+                    <span class="value">@ViewBag.DaysSinceStart days</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Reason</span>
+                    <span class="value" style="font-size:0.8rem;max-width:120px;text-align:right;">@ViewBag.FeeReason</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Fee Amount</span>
+                    <span class="value" style="font-size:1.2rem;font-weight:800;color:@(ViewBag.CancellationFee > 0 ? "var(--accent-red)" : "var(--accent-green)");">
+                        @if (ViewBag.CancellationFee > 0)
+                        {
+                            @:₹@ViewBag.CancellationFee.ToString("N2")
+                        }
+                        else
+                        {
+                            @:Free
+                        }
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Warning Banner -->
+<div class="cancel-warning mb-4 text-white">
+    <i class="bi bi-exclamation-triangle-fill" style="font-size:1.3rem;flex-shrink:0;"></i>
+    <div>
+        <strong>This action cannot be undone.</strong> Your membership will be cancelled immediately and you will lose access to all gym facilities. Any applicable cancellation fee will be charged.
+    </div>
+</div>
+
+<!-- Confirm Form -->
+<form asp-action="ConfirmCancel" method="post">
+    <div class="d-flex gap-3">
+        <button type="submit" class="btn btn-danger btn-lg">
+            <i class="bi bi-x-circle"></i> Confirm Cancellation
+        </button>
+        <a asp-action="Index" class="btn btn-secondary btn-lg">
+            <i class="bi bi-arrow-left"></i> Keep My Membership
+        </a>
+    </div>
+</form>

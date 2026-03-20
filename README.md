@@ -78,12 +78,7 @@ dotnet run
 
 The application will be available at `https://localhost:5001` or `http://localhost:5000`
 
-## Default Admin Credentials
 
-After running migrations, use these credentials to login as admin:
-
-- **Email**: admin@example.com
-- **Password**: admin123
 
 ## Default Seeded Plans
 
